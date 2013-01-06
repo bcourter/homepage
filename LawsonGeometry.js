@@ -6,8 +6,8 @@ THREE.LawsonGeometry = function ( radius, widthSegments, heightSegments, phiStar
 
 	this.radius = radius || 1;
 
-	this.widthSegments = Math.max( 8, Math.floor( widthSegments ) || 64 );
-	this.heightSegments = Math.max( 6, Math.floor( heightSegments ) || 48 );
+	this.widthSegments = Math.max( 2, Math.floor( widthSegments ) || 64 );
+	this.heightSegments = Math.max( 2, Math.floor( heightSegments ) || 48 );
 
 	phiStart = phiStart !== undefined ? phiStart : 0;
 	phiLength = phiLength !== undefined ? phiLength : 2 * Math.PI;
@@ -26,8 +26,7 @@ THREE.LawsonGeometry = function ( radius, widthSegments, heightSegments, phiStar
 	circle.applyMatrix(rot);
 	
 	function lawson(u, v) {
-		v *= 2 * Math.PI;
-		var point = circle.vertices[1 + Math.floor(u * (circle.vertices.length - 2))]
+		var point = circle.vertices[1 + Math.floor(u / 2 / Math.PI * (circle.vertices.length - 2))];
 		
 		//From Daniel Piker
 		var xa = point.x;        //getting the coordinates of the input point
@@ -79,7 +78,7 @@ THREE.LawsonGeometry = function ( radius, widthSegments, heightSegments, phiStar
 			var u = x / this.widthSegments;
 			var v = y / this.heightSegments;
 
-			var vertex = lawson(u, v);
+			var vertex = lawson(phiStart + phiLength * u, thetaStart + thetaLength * v);
 			this.vertices.push( vertex );
 
 			verticesRow.push( this.vertices.length - 1 );
