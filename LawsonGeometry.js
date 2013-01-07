@@ -26,7 +26,7 @@ THREE.LawsonGeometry = function ( radius, widthSegments, heightSegments, phiStar
 	circle.applyMatrix(rot);
 	
 	function lawson(u, v) {
-		var point = circle.vertices[Math.floor(u / 2 / Math.PI * (circle.vertices.length - 1))];
+		var point = circle.vertices[1 + Math.floor(u / 2 / Math.PI * (circle.vertices.length - 2))];
 		
 		//From Daniel Piker
 		var xa = point.x;        //getting the coordinates of the input point
