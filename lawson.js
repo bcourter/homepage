@@ -10,6 +10,7 @@ renderer.sortObjects = false;
 renderer.setSize(window.innerWidth, window.innerHeight); 
 document.body.appendChild(renderer.domElement);
 document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+window.addEventListener( 'resize', onWindowResize, false );
 
 var uSegments = 64;
 var vSegments = 46;
@@ -18,10 +19,10 @@ var parent = new THREE.Object3D();
 parent.rotation.x += Math.PI / 4
 scene.add( parent );
 
-var lowSaturation = 0.1;
-var highSaturation = 0.8;
+var lowSaturation = 0.4;
+var highSaturation = 0.6;
 var lowBrightness = 0.7;
-var highBrightness = 0.8;
+var highBrightness = 0.7;
 
 for (var i = 0; i < vSegments; i++) { 
 	var geometry = new THREE.LawsonGeometry(1, uSegments, 1, 0, 2 * Math.PI, i / vSegments * 2 * Math.PI, 2 * Math.PI / vSegments);
@@ -69,7 +70,7 @@ light = new THREE.DirectionalLight( 0xffffff );
 light.position.set( 0, 0, -1 );
 scene.add( light );
 
-camera.position.z = 6;
+camera.position.z = 4;
 
 function render() { 
 	parent.rotation.y += 0.002;
@@ -91,7 +92,7 @@ function render() {
 
 			INTERSECTED = intersects[0].object;
 			INTERSECTED.currentColor = INTERSECTED.material.color;
-			INTERSECTED.material.color = new THREE.Color().setHSV(INTERSECTED.hue, highSaturation, highBrightness);
+		//	INTERSECTED.material.color = new THREE.Color().setHSV(INTERSECTED.hue, highSaturation, highBrightness);
 		}
 	} else {
 		if (INTERSECTED) 
@@ -111,4 +112,13 @@ function onDocumentMouseMove( event ) {
 
 	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+}
+
+function onWindowResize() {
+
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+
+	renderer.setSize( window.innerWidth, window.innerHeight );
+
 }
