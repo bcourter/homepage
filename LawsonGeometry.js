@@ -63,7 +63,7 @@ THREE.LawsonGeometry = function ( radius, widthSegments, heightSegments, phiStar
 			return new THREE.Vector3(0, 0, 0);
 		}
 	
-		return point;
+		return point.multiplyScalar(radius);
 	}
 
 	var x, y, vertices = [], uvs = [];
