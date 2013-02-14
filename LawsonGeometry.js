@@ -6,8 +6,8 @@ THREE.LawsonGeometry = function ( radius, widthSegments, heightSegments, phiStar
 
 	this.radius = radius || 1;
 
-	this.widthSegments = Math.max( 2, Math.floor( widthSegments ) || 64 );
-	this.heightSegments = Math.max( 2, Math.floor( heightSegments ) || 48 );
+	this.widthSegments = Math.max( 2, Math.floor( widthSegments ) || 128 );
+	this.heightSegments = Math.max( 2, Math.floor( heightSegments ) || 96 );
 
 	phiStart = phiStart !== undefined ? phiStart : 0;
 	phiLength = phiLength !== undefined ? phiLength : 2 * Math.PI;
@@ -20,13 +20,20 @@ THREE.LawsonGeometry = function ( radius, widthSegments, heightSegments, phiStar
 	var circleAngle = Math.PI / 2;
 	var inverseOffset = new THREE.Vector3(0.5, 0, 0);
 	
-	var circle = new THREE.CircleGeometry(1, this.widthSegments, 0, 2 * Math.PI);
+	var circle = new THREE.Geometry();
+	for (var i = 0; i <= widthSegments; i++) {
+		var angle = 2 * Math.PI * i / widthSegments;
+		circle.vertices.push(new THREE.Vector3(Math.cos(angle), Math.sin(angle), 0));
+	}
+	
+	this.circle = circle;
+	
 	var rot = new THREE.Matrix4();  
 	rot.makeRotationY(circleAngle);
 	circle.applyMatrix(rot);
 	
 	function lawson(u, v) {
-		var point = circle.vertices[1 + Math.floor(u / 2 / Math.PI * (circle.vertices.length - 2))];
+		var point = circle.vertices[Math.floor(u / 2 / Math.PI * (circle.vertices.length - 1))];
 		
 		//From Daniel Piker
 		var xa = point.x;        //getting the coordinates of the input point
@@ -57,8 +64,7 @@ THREE.LawsonGeometry = function ( radius, widthSegments, heightSegments, phiStar
 		point = point.multiplyScalar(1 / point.lengthSq());
 	
 		if (
-			isNaN(point.x) || isNaN(point.y) || isNaN(point.z) ||
-			isNaN(point.x) || isNaN(point.y) || isNaN(point.z)
+			isNaN(point.x) || isNaN(point.y) || isNaN(point.z) 
 			) {
 			return new THREE.Vector3(0, 0, 0);
 		}
@@ -69,12 +75,10 @@ THREE.LawsonGeometry = function ( radius, widthSegments, heightSegments, phiStar
 	var x, y, vertices = [], uvs = [];
 
 	for ( y = 0; y <= this.heightSegments; y ++ ) {
-
 		var verticesRow = [];
 		var uvsRow = [];
 
 		for ( x = 0; x <= this.widthSegments; x ++ ) {
-
 			var u = x / this.widthSegments;
 			var v = y / this.heightSegments;
 
@@ -83,12 +87,10 @@ THREE.LawsonGeometry = function ( radius, widthSegments, heightSegments, phiStar
 
 			verticesRow.push( this.vertices.length - 1 );
 			uvsRow.push( new THREE.Vector2( u, 1 - v ) );
-
 		}
 
 		vertices.push( verticesRow );
 		uvs.push( uvsRow );
-
 	}
 
 	for ( y = 0; y < this.heightSegments; y ++ ) {

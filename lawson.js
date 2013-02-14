@@ -12,7 +12,7 @@ document.body.appendChild(renderer.domElement);
 document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 window.addEventListener( 'resize', onWindowResize, false );
 
-var uSegments = 64;
+var uSegments = 128;
 var vSegments = 46;
 
 var parent = new THREE.Object3D();
@@ -26,6 +26,10 @@ var highBrightness = 0.7;
 
 for (var i = 0; i < vSegments; i++) { 
 	var geometry = new THREE.LawsonGeometry(1, uSegments, 1, 0, 2 * Math.PI, i / vSegments * 2 * Math.PI, 2 * Math.PI / vSegments);
+
+  //  var material = new THREE.LineBasicMaterial({        color: 0x0000ff    });
+   // var line = new THREE.Line(geometry.circle, material);
+   // scene.add(line);
 
 	var geometryFlip = new THREE.LawsonGeometry(1, uSegments, 1, 0, 2 * Math.PI, i / vSegments * 2 * Math.PI, 2 * Math.PI / vSegments);
 
@@ -80,7 +84,7 @@ function render() {
 //	line.geometry.vertices[0] = vector;
 	projector.unprojectVector( vector, camera );
 
-	var raycaster = new THREE.Raycaster( camera.position, vector.subSelf( camera.position ).normalize() );
+	var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
 	var intersects = raycaster.intersectObjects( scene.children, true );
 	
 //	line.geometry.vertices[1] = vector.subSelf( camera.position ).normalize();
