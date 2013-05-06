@@ -33,7 +33,7 @@ THREE.LawsonGeometry = function ( radius, widthSegments, heightSegments, phiStar
 	circle.applyMatrix(rot);
 	
 	function lawson(u, v) {
-		var point = circle.vertices[Math.floor(u / 2 / Math.PI * (circle.vertices.length - 1))];
+        var point = circle.vertices[Math.round(u / 2 / Math.PI * (circle.vertices.length - 1))];
 		
 		//From Daniel Piker
 		var xa = point.x;        //getting the coordinates of the input point
@@ -60,7 +60,7 @@ THREE.LawsonGeometry = function ( radius, widthSegments, heightSegments, phiStar
 		var point = new THREE.Vector3(xd, yd, zd);
 	
 		//spherical inversion
-		point = new THREE.Vector3().add(point, inverseOffset);
+        point = new THREE.Vector3().addVectors(point, inverseOffset);
 		point = point.multiplyScalar(1 / point.lengthSq());
 	
 		if (
