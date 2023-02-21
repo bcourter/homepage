@@ -1,0 +1,12 @@
+[submodule "Struttura"]
+	path = Struttura
+	url = https://github.com/bcourter/Struttura
+[submodule "Penrose-Homepage"]
+	path = Penrose-Homepage
+	url = https://github.com/bcourter/Penrose-Homepage
+[submodule "four.js"]
+	path = Four
+	url = https://github.com/bcourter/four.js
+[submodule "Poincare-WebGL"]
+	path = Poincare-WebGL
+	url = https://github.com/bcourter/Poincare-WebGL
